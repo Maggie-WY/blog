@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="com.ssm.blog.mapper.ITypeInfo">
+	
+	<!-- 建立sql查询结果字段与实体属性的映射关系 -->
+	<resultMap id="TypeInfoMap" type="com.ssm.blog.view.TypeInfo">
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="sort_no" property="sortNo" />
+	</resultMap>
+	
+	<!-- 查询所有文章文类 -->
+	<select id="getTypeList" resultMap="TypeInfoMap">
+		SELECT
+			*
+		FROM
+			type_info
+		<where>
+			user_id = #{user_id}
+		</where>
+		ORDER BY sort_no
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO type_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sortNo!=null and sortNo!=''">sort_no,</if>
+			<if test="name!=null and name!=''">name,</if>
+			<if test="user_id!=null and user_id!=''">user_id,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sortNo!=null and sortNo!=''">#{sortNo},</if>
+			<if test="name!=null and name!=''">#{name},</if>
+			<if test="user_id!=null and user_id!=''">#{user_id},</if>
+		</trim>
+	</insert>
+	<update id="update">
+		UPDATE type_info
+		<set>
+			<if test="sortNo!=null">sort_no=#{sortNo},</if>
+			<if test="name!=null">name=#{name},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteTypes">
+	DELETE FROM type_info WHERE id IN
+	<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+	</delete>
+	
+</mapper>

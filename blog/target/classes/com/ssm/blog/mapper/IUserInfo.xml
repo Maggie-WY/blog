@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="com.ssm.blog.mapper.IUserInfo">
+	
+	<!-- 建立sql查询结果字段与实体属性的映射关系 -->
+	<resultMap id="UserInfoMap" type="com.ssm.blog.view.UserInfo">
+		<result column="id" property="id" />
+		<result column="user_name" property="userName" />
+		<result column="pass_word" property="passWord" />
+		<result column="type" property="type" />
+	</resultMap>
+	
+	<!-- 根据用户名和密码得到用户 校验用户登录 -->
+	<select id="selectUser" resultMap="UserInfoMap">
+		SELECT
+			*
+		FROM
+			user_info
+		<where>
+			user_name = #{userName} and pass_word = #{passWord}
+		</where>
+	</select>
+	
+</mapper>
